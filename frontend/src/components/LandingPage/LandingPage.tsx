@@ -1,6 +1,5 @@
 'use client'
 
-import Head from 'next/head'
 import { Helmet } from 'react-helmet';
 import {
   Box,
@@ -13,86 +12,129 @@ import {
   useColorModeValue,
   createIcon,
   Image,
-  Center
+  Center,
+  Flex,
+  Spacer // Add Spacer for flexible spacing in Flex
 } from '@chakra-ui/react'
+
+import { Link } from 'react-router-dom';
 
 export default function LandingPage() {
   return (
     <>
     <Helmet bodyAttributes={{style: 'background-color : #4b92db'}}/>
-      <Container maxW={'3xl'}>
-        <Stack
-          as={Box}
-          textAlign={'center'}
-          spacing={{ base: 8, md: 14 }}
-          py={{ base: 20, md: 36 }}>
-          <Heading
-            fontWeight={600}
-            fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
-            lineHeight={'110%'}
-            color = {'gray.100'}>
-            Find your <br />
-            <Text as={'span'} color={'gray.100'}>
-              new home.
-            </Text>
-          </Heading>
-
-          <Center>
+      {/* Wrap everything in a container for positioning */}
+      <div style={{ position: 'relative' }}>
+        {/* Navbar */}
+        <Flex
+          as="nav"
+          align="center"
+          justify="space-between"
+          wrap="wrap"
+          padding="1.5rem"
+          bg="#ffffff" // Navbar background color
+          color="#4b92db" // Text color
+          boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+          position="fixed" // Fixed position to stick at the top
+          top="0" // Stick to the top
+          left="0"
+          right="0"
+          zIndex="999" // Ensure it's above other content
+          width="100%" // Full width
+        >
+          <Flex align="center" mr={5}>
             <Image
-                boxSize="200px"
-                src="unhcr logo.svg"
-                alt="UNHCR logo"
+              boxSize="40px" // Adjust size as needed
+              src="/unhcr logo.svg" // Path to your logo file
+              alt="UNHCR logo"
             />
-          </Center>
+            <Text ml={2} fontWeight="bold" fontSize={20}>Refugee Haven Search</Text>
+          </Flex>
 
-          <Text 
-            fontWeight={800}
-            fontSize={17.5}
-            color={'gray.300'}>
-            Find the safe haven that best suits your needs by using our specialized algorithm.
-          </Text>
+          {/* Optional: Add additional navbar items (e.g., links) */}
+          {/* <Spacer /> */}
+          {/* <Box>
+            <Button colorScheme="green" variant="outline">Sign In</Button>
+          </Box> */}
+        </Flex>
 
+        {/* Main content */}
+        <Container maxW={'3xl'} mt="80px"> {/* Add top margin to push content below the fixed navbar */}
           <Stack
-            direction={'column'}
-            spacing={3}
-            align={'center'}
-            alignSelf={'center'}
-            position={'relative'}>
-            <Button
-              colorScheme={'yellow'}
-              bg={'#faeb00'}
-              rounded={'full'}
-              px={6}
-              _hover={{
-                bg: 'yellow.500',
-              }}>
-              Get Started
-            </Button>
-            <Button variant={'link'} colorScheme={'blue'} color='white' size={'sm'}>
-              Learn more
-            </Button>
-            {/* <Box>
-              <Icon
-                as={Arrow}
-                color={useColorModeValue('gray.800', 'gray.300')}
-                w={71}
-                position={'absolute'}
-                right={-71}
-                top={'10px'}
-              />
-              <Text
-                fontSize={'lg'}
-                fontFamily={'Caveat'}
-                position={'absolute'}
-                right={'-125px'}
-                top={'-15px'}
-                transform={'rotate(10deg)'}>
-                Starting at $15/mo
+            as={Box}
+            textAlign={'center'}
+            spacing={{ base: 8, md: 14 }}
+            py={{ base: 20, md: 36 }}>
+            <Heading
+              fontWeight={600}
+              fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
+              lineHeight={'110%'}
+              color = {'gray.100'}>
+              Find your <br />
+              <Text as={'span'} color={'gray.100'}>
+                new home.
               </Text>
-            </Box> */}
+            </Heading>
+
+            <Center>
+              <Image
+                  boxSize="350px"
+                  src="flying around world.png"
+                  alt="UNHCR logo"
+              />
+            </Center>
+
+            <Text 
+              fontWeight={800}
+              fontSize={18.5}
+              color={'gray.200'}>
+              Find the safe haven country that best suits your needs by using our specialized algorithm.
+            </Text>
+
+            <Stack
+              direction={'column'}
+              spacing={3}
+              align={'center'}
+              alignSelf={'center'}
+              position={'relative'}>
+                <Link to="/userform">
+                     <Button
+                        colorScheme={'yellow'}
+                        bg={'#faeb00'}
+                        rounded={'full'}
+                        px={6}
+                        _hover={{
+                        bg: 'yellow.500',
+                        }}>
+                        Get Started
+                    </Button>
+                </Link>
+              <Button variant={'link'} colorScheme={'blue'} color='white' size={'md'}>
+                Learn more
+              </Button>
+              {/* <Box>
+                <Icon
+                  as={Arrow}
+                  color={useColorModeValue('gray.800', 'gray.300')}
+                  w={71}
+                  position={'absolute'}
+                  right={-71}
+                  top={'10px'}
+                />
+                <Text
+                  fontSize={'lg'}
+                  fontFamily={'Caveat'}
+                  position={'absolute'}
+                  right={'-125px'}
+                  top={'-15px'}
+                  transform={'rotate(10deg)'}>
+                  Starting at $15/mo
+                </Text>
+              </Box> */}
+            </Stack>
           </Stack>
-        </Stack>
-      </Container>
+        </Container>
+      </div>
     </>
   )
 }
