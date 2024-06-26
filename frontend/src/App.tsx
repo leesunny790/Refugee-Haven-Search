@@ -1,13 +1,16 @@
 import Logo from "@/assets/logo.png";
-import HelloWorld from "@/components/HelloWorld/HelloWorld";
+import LandingPage from "@/components/LandingPage/LandingPage";
 
 import styles from "./App.module.css";
 
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+
 export default function App() {
   return (
-    <main className={styles.main}>
-      <img className={styles.logo} alt="React logo" width="400px" src={Logo} />
-      <HelloWorld msg="Hello React + TypeScript + Vite" />
-    </main>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+      </Routes>
+    </Router>
   );
 }
