@@ -207,14 +207,11 @@ def SetMatchValues(country, user, preferences):
     for i in range(0, len(preferences.VariablePreferences)):
         currKey = preferences.VariablePreferences.keys()[i]
         preferVal = preferences.VariablePreferences.values()[i]
-        preferenceFactor = 0
-        if (preferVal == 3):
-            preferenceFactor = 3
-        elif(preferVal == 2):
-            preferenceFactor = 2
-        else:
-            preferenceFactor = 1
-        userInputWeighIn = CalculateWeighInTimesBaseVal(country, user, varName)
+        
+        userInputWeighIn = CalculateWeighInTimesBaseVal(country, user, currKey)
+
+        #Do some math here to factor preferVal into CalculateWeighInTimesBaseVal
+
         
         
 #Input
@@ -223,16 +220,26 @@ def CalculateWeighInTimesBaseVal(country, user, varName):
         #Arbitrary added at end
     elif(varName == "hdi"):
         #Arbitrary added at end
-    elif(varName == )
+    elif(varName == countryLanguages):
     
-    if(varName == "youthPreferred"):
+    elif(varName = "genderRatio"):
+
+    elif(varName == "unemploymentRate"):
+    
+    elif(varName == "collectivismValue"):
+
+    elif(varName == "personalFreedomValue"):
+    
+    elif(varName == "youthPreferred"):
         if 18 <= user.age <= 45 :
             if country.youthPreferred == 'yes' :
                 # Match_Value['country'] +=1
     
+    else:
+        #supports dependents
+
 
     
-        #Do logic
 
 
 #Input:
