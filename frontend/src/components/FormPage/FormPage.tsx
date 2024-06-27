@@ -27,6 +27,7 @@ import {
 
 import { useToast } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 const Form1 = () => {
   const [show, setShow] = useState(false);
@@ -507,7 +508,7 @@ export default function Multistep() {
         <Box
           borderWidth="1px"
           rounded="lg"
-          bg="gray.100" // so forms are not transparent and do not blend into the background
+          bg="white" // so forms are not transparent and do not blend into the background
           shadow="1px 1px 3px rgba(0,0,0,0.3)"
           maxWidth={800}
           p={6}
@@ -541,22 +542,15 @@ export default function Multistep() {
                 </Button>
               </Flex>
               {step === 2 ? (
-                <Button
-                  onClick={() => {
-                    toast({
-                      title: 'Form submitted.',
-                      description: 'Your form has been successfully submitted.',
-                      status: 'success',
-                      duration: 3000,
-                      isClosable: true,
-                    });
-                  }}
-                  colorScheme="red"
-                  variant="solid"
-                  w="7rem"
-                >
-                  Submit
-                </Button>
+                <Link to= "/results">
+                    <Button
+                    colorScheme="red"
+                    variant="solid"
+                    w="7rem"
+                    >
+                    Submit
+                    </Button>
+                </Link>
               ) : null}
             </Flex>
           </ButtonGroup>
