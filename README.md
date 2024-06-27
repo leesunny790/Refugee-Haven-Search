@@ -23,5 +23,5 @@ This is a standard workflow of the product supported by a TypeScript Dashboard â
 - Willingness of host countries to accept refugees with dependents based on their foreign policies.
 - Human Development Index of host countries to vouch for the overall standard of living.
 
-1. The algorithm tries to normalize the refugee preferences and assign match values for every host country based on Final_Hacks.csv and refugee input.
-2. Lastly, the algorithm suggests host countries with relatively high probability to accept the refugees.
+4. The algorithm tries to normalize the refugee preferences and assign match values for every host country based on Final_Hacks.csv and refugee input.
+5. Lastly, the algorithm suggests host countries with relatively high probability to accept the refugees.
