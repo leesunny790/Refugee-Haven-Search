@@ -1,4 +1,6 @@
 import numpy as np
+from flask import Flask, render_template, request, jsonify
+app = Flask(__name__)
 
 class UserData:
     #name, coo, etc..
@@ -69,6 +71,7 @@ def FillCountryList(countries):
 # - 3xN numpy array containing the ranked lists for each category of importance by name
 # - Name (as primary key) of user to do matching on
 #Returns: Ranked list of countries that best match the user's preferences and bio
+@app.route('/preferences', methods=["GET"])
 def MainAlgorithm(preferences, name, originCountry, age, 
     userLanguages, gender, sexuality, partySize, educationLevel):
     #1. Go through each item in the ranked lists and assign them an

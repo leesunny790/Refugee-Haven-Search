@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Progress,
   Box,
@@ -29,10 +29,42 @@ import { useToast } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
-const Form1 = () => {
+interface FormProps {
+    formData: {
+      originCountry: string;
+      age: string;
+      // languages: string[];
+      gender: string;
+      sexuality: string;
+      partySize: string;
+      highestEducationLevel: string;
+      democracyDesire: string;
+      cultureDesire: string;
+    };
+    setFormData: React.Dispatch<React.SetStateAction<{
+      originCountry: string;
+      age: string;
+      // languages: string[];
+      gender: string;
+      sexuality: string;
+      partySize: string;
+      highestEducationLevel: string;
+      democracyDesire: string;
+      cultureDesire: string;
+    }>>;
+}
+
+const Form1: React.FC<FormProps> = ({ formData, setFormData }) => {
+
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const toast = useToast();
+
+  const [originCountry, setOriginCountry] = React.useState('')
+  const [age, setAge] = React.useState('');
+  // const [languages, setLanguages] = React.useState<string[]>([]);
+  const [gender, setGender] = React.useState('');
+  const [sexuality, setSexuality] = React.useState('');
 
   const countries = [
     'Afghanistan',
@@ -235,6 +267,43 @@ const Form1 = () => {
   const genders = ['Male', 'Female', 'Nonbinary'];
   const sexualities = ['Heterosexual', 'Non-heterosexual'];
 
+  const handleCountrySelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      originCountry: event.target.value,
+    });
+  };
+
+  const handleAge = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      age: event.target.value,
+    });
+  };
+
+//   const handleLanguageSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+//     const selectedOptions = Array.from(event.target.selectedOptions).map(option => option.value);
+//     setFormData({
+//       ...formData,
+//       languages: selectedOptions,
+//     });
+//   };
+
+  const handleGender = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      gender: event.target.value,
+    });
+  };
+
+  const handleSexuality = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      sexuality: event.target.value,
+    });
+  };
+
+
   return (
     <>
       <Heading w="100%" textAlign={'center'} fontWeight="bold" mb="2%">
@@ -245,7 +314,10 @@ const Form1 = () => {
           <FormLabel htmlFor="origin-country" fontWeight={'bold'}>
             Origin Country
           </FormLabel>
-          <Select id="origin-country" placeholder="Select country">
+          <Select id="origin-country" placeholder="Select country"
+            value={originCountry}
+            onChange={handleCountrySelect}
+            >
             {countries.map((country, index) => (
               <option key={index}>{country}</option>
             ))}
@@ -256,7 +328,10 @@ const Form1 = () => {
           <FormLabel htmlFor="age" fontWeight={'bold'}>
             Age
           </FormLabel>
-          <Input id="age" type="number" placeholder="Enter age" />
+          <Input id="age" type="number" placeholder="Enter age" 
+            value={age}
+            onChange={handleAge}
+          />
         </FormControl>
       </Flex>
 
@@ -264,7 +339,10 @@ const Form1 = () => {
         <FormLabel htmlFor="languages" fontWeight={'bold'}>
           Languages (Press shift to select multiple languages)
         </FormLabel>
-        <Select id="languages" placeholder="Select languages" multiple>
+        <Select id="languages" placeholder="Select languages" 
+            // value={languages}
+            // onChange={handleLanguageSelect}
+        multiple>
             <option>English</option>
             <option>Spanish</option>
             <option>French</option>
@@ -370,7 +448,9 @@ const Form1 = () => {
         <FormLabel htmlFor="gender" fontWeight={'bold'}>
           Gender
         </FormLabel>
-        <Select id="gender" placeholder="Select gender">
+        <Select id="gender" placeholder="Select gender"
+            value={gender}
+            onChange={handleGender}>
           {genders.map((gender, index) => (
             <option key={index}>{gender}</option>
           ))}
@@ -381,7 +461,9 @@ const Form1 = () => {
         <FormLabel htmlFor="sexuality" fontWeight={'bold'}>
           Sexuality
         </FormLabel>
-        <Select id="sexuality" placeholder="Select sexuality">
+        <Select id="sexuality" placeholder="Select sexuality"
+            value={sexuality}
+            onChange={handleSexuality}>
           {sexualities.map((sexuality, index) => (
             <option key={index}>{sexuality}</option>
           ))}
@@ -392,8 +474,12 @@ const Form1 = () => {
 };
 
 const Form2 = () => {
-  const toast = useToast();
-
+    
+  const [partySize, setPartySize] = React.useState('');
+  const [highestEducationLevel, setHighestEducationLevel] = React.useState('');
+  const [democracyDesire, setDemocracyDesire] = React.useState('');
+  const [cultureDesire, setCultureDesire] = React.useState('');
+  
   const partySizes = ['Individual', 'Travelling with dependants'];
   const educationLevels = [
     'Some Schooling/High School',
@@ -402,6 +488,22 @@ const Form2 = () => {
   ];
   const democracyOptions = ['Yes', 'No'];
   const cultureOptions = ['Collectivist', 'Individualistic'];
+
+  const handlePartySize = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setPartySize(event.target.value);
+  };
+
+  const handleHighestEducationLevel = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setHighestEducationLevel(event.target.value);
+  };
+
+  const handleDemocracyDesire = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setDemocracyDesire(event.target.value);
+  };
+
+  const handleCultureDesire = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setCultureDesire(event.target.value);
+  };
 
   return (
     <>
@@ -412,7 +514,9 @@ const Form2 = () => {
         <FormLabel htmlFor="party-size" fontWeight={'bold'}>
           Party Size
         </FormLabel>
-        <Select id="party-size" placeholder="Select option">
+        <Select id="party-size" placeholder="Select option"
+            value={partySize}
+            onChange={handlePartySize}>
           {partySizes.map((size, index) => (
             <option key={index}>{size}</option>
           ))}
@@ -423,7 +527,9 @@ const Form2 = () => {
         <FormLabel htmlFor="education-level" fontWeight={'bold'}>
           Highest Educational Level
         </FormLabel>
-        <Select id="education-level" placeholder="Select option">
+        <Select id="education-level" placeholder="Select option"
+            value={highestEducationLevel}
+            onChange={handleHighestEducationLevel}>
           {educationLevels.map((level, index) => (
             <option key={index}>{level}</option>
           ))}
@@ -434,7 +540,9 @@ const Form2 = () => {
         <FormLabel htmlFor="democracy-desire" fontWeight={'bold'}>
           Democracy Desire
         </FormLabel>
-        <Select id="democracy-desire" placeholder="Select option">
+        <Select id="democracy-desire" placeholder="Select option"
+            value={democracyDesire}
+            onChange={handleDemocracyDesire}>
           {democracyOptions.map((option, index) => (
             <option key={index}>{option}</option>
           ))}
@@ -445,7 +553,9 @@ const Form2 = () => {
         <FormLabel htmlFor="culture-desire" fontWeight={'bold'}>
           Culture Desire
         </FormLabel>
-        <Select id="culture-desire" placeholder="Select option">
+        <Select id="culture-desire" placeholder="Select option"
+            value={cultureDesire}
+            onChange={handleCultureDesire}>
           {cultureOptions.map((option, index) => (
             <option key={index}>{option}</option>
           ))}
@@ -456,9 +566,21 @@ const Form2 = () => {
 };
 
 export default function Multistep() {
-  const toast = useToast();
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(0); // Adjust initial progress
+
+  const [formData, setFormData] = useState({
+    // Initialize an object to store form data
+    originCountry: '',
+    age: '',
+    // languages: [],
+    gender: '',
+    sexuality: '',
+    partySize: '',
+    highestEducationLevel: '',
+    democracyDesire: '',
+    cultureDesire: '',
+  });
 
   // Function to handle moving to the next step
   const nextStep = () => {
@@ -506,7 +628,6 @@ export default function Multistep() {
         </Flex>
 
         <Box
-          borderWidth="1px"
           rounded="lg"
           bg="white" // so forms are not transparent and do not blend into the background
           shadow="1px 1px 3px rgba(0,0,0,0.3)"
@@ -517,7 +638,7 @@ export default function Multistep() {
           mt="100px" // Adjust top margin to position below the navbar
         >
           <Progress hasStripe value={progress} mb="5%" mx="5%" isAnimated></Progress>
-          {step === 1 ? <Form1 /> : <Form2 />}
+          {step === 1 ? <Form1 formData={formData} setFormData={setFormData} /> : <Form2 />}
           <ButtonGroup mt="5%" w="100%">
             <Flex w="100%" justifyContent="space-between">
               <Flex>
