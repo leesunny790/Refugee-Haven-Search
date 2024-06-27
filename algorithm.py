@@ -1,4 +1,4 @@
-import numpy as numpy
+import numpy as np
 
 class UserData:
     #name, coo, etc..
@@ -78,20 +78,20 @@ def MainAlgorithm(preferences, name, originCountry, age,
     #4. Return the best x countries
     
     #Assign preference rating:
-    variablePreferences = CountryVariablePreferences()
+    variablePreferences = CountryVariablePreference()
     for i in range(0, len(preferences[0])):
         myWeight = StupidFunction(len(preferences[0]), i, 5)
-        assignPreferences(variablePreferences, preferences[0][i], myWeight)
+        assignPreference(variablePreferences, preferences[0][i], myWeight)
     for j in range(0, len(preferences[1])):
         myWeight = StupidFunction(len(preferences[0]), i, 3)
-        assignPreferences(variablePreferences, preferences[0][j], myWeight)
+        assignPreference(variablePreferences, preferences[0][j], myWeight)
     for k in range(0, len(preferences[2])):
         myWeight = StupidFunction(len(preferences[0]), i, 1)
-        assignPreferences(variablePreferences, preferences[0][k], myWeight)
+        assignPreference(variablePreferences, preferences[0][k], myWeight)
 
     variablePreferences.VariablePreferences = dict(sorted(variablePreferences.VariablePreferences.items(), key = lambda item: item[1], reverse=True))
-    maxWeight = variablePreference.VariablePreferences.values()[len(variablePreferences.VariablePreferences) - 1]
-    minWeight = variablePreference.VariablePreferences.values()[0]
+    maxWeight = variablePreferences.VariablePreferences.values()[len(variablePreferences.VariablePreferences) - 1]
+    minWeight = variablePreferences.VariablePreferences.values()[0]
     for i in range(0,len(variablePreferences.VariablePreferences)):
         newVal = (variablePreferences.VariablePreferences.values()[i] - minWeight) / (maxWeight - minWeight)
         variablePreferences.VariablePreferences.values()[i] = newVal
@@ -133,7 +133,7 @@ def StupidFunction(numItems, idx, baseBucketValue):
         elif(idx == 1):
             return baseBucketValue + 0.25
         elif(idx == 2):
-            return basebucketValue - 0.25
+            return baseBucketValue - 0.25
         else:
             return baseBucketValue - 0.5
     elif(numItems == 5):
@@ -216,48 +216,48 @@ def SetMatchValues(country, user, preferences):
         
 #Input
 def CalculateWeighInTimesBaseVal(country, user, varName):
-    if(varName == "asylumRate"):
+    if varName == "asylumRate":
         #Arbitrary added at end
         #count positive if good asylum rate, count negative if not
         #split down middle once calculated
-    elif(varName == "hdi"):
+    elif varName == "hdi":
         #Arbitrary added at end
         #count very minimally see asylum rate
-    elif(varName == "countryLanguages"):
+    elif varName == "countryLanguages":
         #from dataset, countryLanguages will be a Dict with key value pair showing percentage pop speaking said langauge
         #userLanguages will just be from the array
-        if (country.countryLanguages[0] == user.userLanguages[0]):
+        if country.countryLanguages[0] == user.userLanguages[0]:
             #main languages match count very positively
             return 
         
         totalPopularLanguageMatch = 0.0
         for k, v in country.countryLanguages:
             #key value pairs
-            if (k in user.userLanguages):
+            if k in user.userLanguages:
                 #weigh by v or the percentage pop
                 totalPopuplarLanguageMatch += 0.0 #CHANGE THIS
 
-        if (totalPopularLanguageMatch == 0.0):
+        if totalPopularLanguageMatch == 0.0:
             #count as net negative as the user speaks no languages from this country
                 
 
                 
-    elif(varName = "genderRatio"):
+    elif varName = "genderRatio":
         #if applicant is male, disregard gender ratio (female dominant countries like Russia are not net positive for male immigrants)
         #if applicant is female, negative if male dominant
         
         #don't weigh this too high due to uncertainty
-    elif(varName == "unemploymentRate"):
+    elif varName == "unemploymentRate":
         #High unemployment is bad
         #if applicant is well educated, decrease detriment due to higher unemployment
-    elif(varName == "collectivismValue"):
+    elif varName == "collectivismValue":
         #set anchor point of collectivism/individualism at origin country
         #Look at difference between GCI of country we are looking at and GCI of origin country
         #count as positive if more in line with desire
         #count as negative if it goes in the opposite direction
         
 
-    elif(varName == "personalFreedomValue"):
+    elif varName == "personalFreedomValue":
         #Mount anchor of GCI at origin country
         #if the country we are looking at is more in line with value count as positive
         #if the country is less in line with the value count as negative
@@ -265,8 +265,8 @@ def CalculateWeighInTimesBaseVal(country, user, varName):
         #ex: origin country Germany, current country is Saudi Arabia, individual desires more democracy = SA's personalFreedomValue is negative
     
     
-    elif(varName == "youthPreferred"):
-        if (18 <= user.age <= 45) :
+    elif varName == "youthPreferred":
+        if 18 <= user.age <= 45 :
             if country.youthPreferred == 'yes' :
                 #count positively
         
@@ -275,16 +275,13 @@ def CalculateWeighInTimesBaseVal(country, user, varName):
     else:
         #supports dependents
         #All we do for this userinput is check if it's greater than one
-        if (user.partySize > 1): 
-            if (country.supportsDependents):
+        if user.partySize > 1: 
+            if country.supportsDependents:
                 #count positively
             else:
                 #count negatively
         else:
             #doesn't matter if traveling alone so count neutrally
-
-
-    
 
 
 #Input:
