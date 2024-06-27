@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   Box,
@@ -8,29 +8,20 @@ import {
   Text,
   Button,
   Stack,
-  Icon,
-  useColorModeValue,
-  createIcon,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  Image,
-  Center,
-  Select,
-  RangeSlider,
-  RangeSliderFilledTrack,
-  RangeSliderThumb,
-  RangeSliderTrack,
   Grid,
   GridItem,
-} from '@chakra-ui/react'
+  Image,
+} from '@chakra-ui/react';
 
-import { useParams, Link, useLocation } from 'react-router-dom';
-import React, { useEffect, useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import React from 'react';
 
 export default function SearchResultsPage() {
-  
+  // Top 5 countries based on previous analysis
+  const countries = [
+    
+  ];
+
   return (
     <>
       <Container maxW={'3xl'}>
@@ -47,43 +38,57 @@ export default function SearchResultsPage() {
           >
             Country Results
           </Heading>
-        
 
           <Grid templateColumns="repeat(auto-fit, minmax(250px, 1fr))" gap={6}>
-              <GridItem>
+            {countries.map((country, index) => (
+              <GridItem key={index}>
                 <Box p={5} shadow="md" borderWidth="1px" borderRadius="md">
+                  <Image
+                    src={country.flagUrl}
+                    alt={`Flag of ${country.name}`}
+                    boxSize="50px"
+                    objectFit="cover"
+                    borderRadius="full"
+                    mb={4}
+                  />
                   <Text fontSize="xl" fontWeight="bold" mt={4}>
-                    title
+                    {country.name}
                   </Text>
                   <Text color="gray.600" fontSize="md" mt={2}>
-                    description
+                    HDI: {country.hdi}
                   </Text>
-                  <Flex justify="space-between" mt={4}>
-                    <Text fontSize="lg" fontWeight="bold">
-                      price
-                    </Text>
-                    <Text fontSize="lg">store</Text>
-                  </Flex>
+                  <Text color="gray.600" fontSize="md" mt={2}>
+                    Collectivism Index: {country.collectivismIndex}
+                  </Text>
+                  <Text color="gray.600" fontSize="md" mt={2}>
+                    Democracy: {country.democracy}
+                  </Text>
+                  <Text color="gray.600" fontSize="md" mt={2}>
+                    Cost of Living: {country.costOfLiving}
+                  </Text>
+                  <Text color="gray.600" fontSize="md" mt={2}>
+                    Males to 100 Females: {country.malesToFemales}
+                  </Text>
                 </Box>
               </GridItem>
+            ))}
           </Grid>
 
           <Flex justify="center" mt={8}>
-            <Link to="/">
+            <Link to="/userform">
               <Button
-                colorScheme="green"
-                bg="green.400"
+                colorScheme="blue"
+                bg="blue.400"
                 rounded="full"
                 px={6}
                 _hover={{
-                  bg: 'green.500',
+                  bg: 'blue.500',
                 }}
               >
-                Search For Another Item!
+                Search for another profile!
               </Button>
             </Link>
           </Flex>
-
         </Stack>
       </Container>
     </>
