@@ -218,25 +218,70 @@ def SetMatchValues(country, user, preferences):
 def CalculateWeighInTimesBaseVal(country, user, varName):
     if(varName == "asylumRate"):
         #Arbitrary added at end
+        #count positive if good asylum rate, count negative if not
+        #split down middle once calculated
     elif(varName == "hdi"):
         #Arbitrary added at end
-    elif(varName == countryLanguages):
-    
-    elif(varName = "genderRatio"):
+        #count very minimally see asylum rate
+    elif(varName == "countryLanguages"):
+        #from dataset, countryLanguages will be a Dict with key value pair showing percentage pop speaking said langauge
+        #userLanguages will just be from the array
+        if (country.countryLanguages[0] == user.userLanguages[0]):
+            #main languages match count very positively
+            return 
+        
+        totalPopularLanguageMatch = 0.0
+        for k, v in country.countryLanguages:
+            #key value pairs
+            if (k in user.userLanguages):
+                #weigh by v or the percentage pop
+                totalPopuplarLanguageMatch += 0.0 #CHANGE THIS
 
+        if (totalPopularLanguageMatch == 0.0):
+            #count as net negative as the user speaks no languages from this country
+                
+
+                
+    elif(varName = "genderRatio"):
+        #if applicant is male, disregard gender ratio (female dominant countries like Russia are not net positive for male immigrants)
+        #if applicant is female, negative if male dominant
+        
+        #don't weigh this too high due to uncertainty
     elif(varName == "unemploymentRate"):
-    
+        #High unemployment is bad
+        #if applicant is well educated, decrease detriment due to higher unemployment
     elif(varName == "collectivismValue"):
+        #set anchor point of collectivism/individualism at origin country
+        #Look at difference between GCI of country we are looking at and GCI of origin country
+        #count as positive if more in line with desire
+        #count as negative if it goes in the opposite direction
+        
 
     elif(varName == "personalFreedomValue"):
+        #Mount anchor of GCI at origin country
+        #if the country we are looking at is more in line with value count as positive
+        #if the country is less in line with the value count as negative
+        #Ex: origin country: russia, current country is France, individual desires more democracy = france's personalFreedomValue is positive
+        #ex: origin country Germany, current country is Saudi Arabia, individual desires more democracy = SA's personalFreedomValue is negative
+    
     
     elif(varName == "youthPreferred"):
-        if 18 <= user.age <= 45 :
+        if (18 <= user.age <= 45) :
             if country.youthPreferred == 'yes' :
-                # Match_Value['country'] +=1
+                #count positively
+        
+        #count neutrally otherwise
     
     else:
         #supports dependents
+        #All we do for this userinput is check if it's greater than one
+        if (user.partySize > 1): 
+            if (country.supportsDependents):
+                #count positively
+            else:
+                #count negatively
+        else:
+            #doesn't matter if traveling alone so count neutrally
 
 
     
@@ -247,7 +292,7 @@ def CalculateWeighInTimesBaseVal(country, user, varName):
 #Output:
 # - None. Sets asylum rate of each country in CountryList
 def setAsylumRates(origin):
-    #lookup refugee database for each country from the user's data
+    #lookup refugee database for each country from the user'ss data
     #popuplate CountryData information
     for i in range(0, len(CountryList)):
         CountryList[i].asylumRate = 0 #get from database
