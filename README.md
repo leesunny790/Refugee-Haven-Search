@@ -3,7 +3,7 @@
 ## Introduction :
 
 Refugee Haven Search is a resource that helps refugees find a home across the globe.
-This is a working prototype of matching the refugees to a host country based on their needs, background and preferences to a safer home in future.
+This is an almost working prototype of matching the refugees to a host country based on their needs, background and preferences to a safer home in future.
 
 **Homes powered by Data** :
 
