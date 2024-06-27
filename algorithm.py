@@ -2,16 +2,22 @@ import numpy as np
 from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
+def main():
+    print("Hello world")
+    bsPref = [["countryLanguages", "genderRatio", "unemploymentRate"], ["collectivismValue", "personalFreedomValue"], ["youthPreferred", "supportsDependents"]]
+    returned = MainAlgorithm(bsPref, "bob", "zimbabwe", 25, ["english", "spanish"], 0, 0, 1, 3)
+    print(returned)
+
 class UserData:
     #name, coo, etc..
-    name = ""
-    originCountry = ""
-    age = 0
-    userLanguages = np.empty() #main language, other languages
-    gender = 0 #0 is male, 1 female, 2 is other
-    sexuality = 0 #0 is hetero, 1 is other
-    partySize = 0 
-    educationLevel = 0 #0 for none, 1 for secondary, 2 for bachelor's, 3 for beyond
+    # name = ""
+    # originCountry = ""
+    # age = 0
+    # userLanguages = np.empty() #main language, other languages
+    # gender = 0 #0 is male, 1 female, 2 is other
+    # sexuality = 0 #0 is hetero, 1 is other
+    # partySize = 0 
+    # educationLevel = 0 
     def __init__ (self, n, oC, a, uL, g, s, p, eL, cD, dP):
         self.name = n
         self.originCountry = oC
@@ -20,25 +26,27 @@ class UserData:
         self.gender = g
         self.sexuality = s
         self.partySize = p
-        self.educationLevel = eL
+        self.educationLevel = eL #0 for none, 1 for secondary, 2 for bachelor's, 3 for beyond
         self.cultureDesire = cD #0 for more individualistic, 1 for more collectivist
         self.democracyPreference = dP #Is democracy important to you 1 yes 0 no
 
 
 class CountryData:
     #CountryName, etc...
-    name = ""
-    asylumRate = 0.0
-    countryLanguages = np.empty() #main language
-    genderRatio = 0.0 #closer to 1 for more males, closer to 0 for more females
-    unemploymentRate = 0.0
-    collectivismValue = 0.0 #smaller is more individualistic, larger is more collectivist
-    personalFreedomValue = 0.0 #explains how authoritarian governments are
-    hdi = 0.0 #accounts for popuplation-wide education, economy, social development
-    youthPreferred = 0 #1 if popuplation is biased old, 0 if not
-    supportsDependents = 0 #float or bool?
+    def __init__ (self, n, aR, cL, gR, uR, cV, pFV, hdi, yP, sD):
+        self.name = n
+        self.asylumRate = aR
+        self.countryLanguages = cL #main language
+        self.genderRatio = gR #closer to 1 for more males, closer to 0 for more females
+        self.unemploymentRate = uR
+        self.collectivismValue = cV #1 is collectivist, 0 is individualistic
+        self.personalFreedomValue = pFV #explains how authoritarian governments are
+        self.hdi = hdi #accounts for popuplation-wide education, economy, social development
+        self.youthPreferred = yP#1 if popuplation is biased old, 0 if not
+        self.supportsDependents = sD #float or bool?
+    
 
-CountryList = np.empty() # a list of CountryData objects
+CountryList = np.empty(0,) # a list of CountryData objects
 
 MatchValues = {} #Dictionary storing [country_name, match_value]
 
@@ -60,10 +68,97 @@ class CountryVariablePreference:
 #Output:
 # - No output. It fills the global CountryList array
 #Purpose: populate CountryList to be used in the main algorithm
-def FillCountryList(countries):
-    for i in range(0, len(countries)):
-        newCountry = CountryData()
-        #do countryData variable assignment here
+def FillCountryList():
+    #given origin country fill ar
+    AusLang = ["english","mandarin", "arabic"]
+    Ausasylum = 0.0
+    Aus = CountryData("australia", Ausasylum, AusLang, 98.6, 4, 0, 1, 0.951, 0,0)
+    print(Aus)
+    CountryList = np.append(CountryList, Aus)
+    BrzLang = ["portuguese", "spanish", "english"]
+    Brzasylum = 0.0
+    Brz = CountryData("brazil", Brzasylum, BrzLang, 96.6, 7.5, 1, 1, 0.754, 1, 1)
+    CountryList = np.append(CountryList, Brz)
+    CanLang = ["english", "french", "punjabi"]
+    Canasylum = 0.0
+    Can = CountryData("canada", Canasylum, CanLang, 98.8, 6.2, 0, 1, 0.929, 1, 1)
+    CountryList = np.append(CountryList, Can)
+    ChiLang = ["mandarin", "cantonese", "shanghainese"]
+    Chiasylum = 0.0
+    Chi = CountryData("china", Chiasylum, ChiLang, 104.3, 5.0, 0, 0, 0.768, 0, 1)
+    CountryList = np.append(CountryList, Chi)
+    FraLang = ["french", "arabic", "portuguese"]
+    Fraasylum = 0.0
+    Fra = CountryData("france", Fraasylum, FraLang, 93.6, 7.5, 0, 1, 0.901, 1, 1)
+    CountryList = np.append(CountryList, Fra)
+    GerLang = ["german", "turkish", "arabic"]
+    Gerasylum = 0.0
+    Ger = CountryData("germany", Gerasylum, GerLang, 97.4, 5.9, 0, 1, 0.95, 1, 1)
+    CountryList = np.append(CountryList, Ger)
+    ItaLang = ["italian", "english", "german"]
+    Itaasylum = 0.0
+    Ita = CountryData("italian", Itaasylum, ItaLang, 95.1, 8.2, 1, 1, 0.892, 1, 1)
+    CountryList = np.append(CountryList, Ita)
+    JapaLang = ["japanese", "ryukyuan", "ainu"]
+    Japaasylum = 0.0
+    Japa = CountryData("japan", Japaasylum, JapaLang, 94.6, 2.6, 0, 1, 0.915, 1, 0)
+    CountryList = np.append(CountryList, Jap)
+    NetLang = ["dutch", "frisian", "turkish"]
+    Netasylum = 0.0
+    Net = CountryData("netherlands", Netasylum, NetLang, 98.8, 3.6, 0, 1, 0.944, 1, 1)
+    CountryList = np.append(CountryList, Net)
+    NZLang = ["english", "maori", "samoan"]
+    NZasylum = 0.0
+    NZ = CountryData("new_zealand", NZasylum, NZLang, 98.3, 4.3, 0, 1, 0.931, 0, 1)
+    CountryList = np.append(CountryList, NZ)
+    RusLang = ["russian", "tatar", "ukrainian"]
+    Rusasylum = 0.0
+    Rus = CountryData("russia", Rusasylum, RusLang, 86.7, 2.7, 1, 0, 0.822, 0, 0)
+    CountryList = np.append(CountryList, Rus)
+    SALang = ["arabic", "english", "urdu"]
+    SAasylum = 0.0
+    SA = CountryData("saudi_arabia", SAasylum, SALang, 136.8, 4.4, 1, 0, 0.854, 0, 0)
+    CountryList = np.append(CountryList, SA)
+    SinLang = ["english", "mandarin", "malay"]
+    Sinasylum = 0.0
+    Sin = CountryData("singapore", Sinasylum, SinLang, 109.7, 2.1, 1, 1, 0.939, 1, 1)
+    CountryList = np.append(CountryList, Sin)
+    UsaLang = ["english","spanish",'chinese']
+    Usaasylum = 0.0
+    Usa = CountryData("united_states", Usaasylum, UsaLang, 98.2,4,0,1,0.927,0,1)
+    CountryList = np.append(CountryList, Usa)
+    UkLang = ["english","polish","punjabi"]
+    Ukasylum = 0.0
+    Uk = CountryData("united_kingdom", Ukasylum, UkLang, 97.6,4.4,0,1,0.932,1,1)
+    CountryList = np.append(CountryList, Uk)
+    UaeLang = ["arabic","english","Hindi"]
+    Uaeasuylum = 0.0
+    Uae = CountryData("united_arab_emirates", Uaeasuylum, UaeLang, 228.2,4.4,1,0,0.89,0,0)
+    CountryList = np.append(CountryList, Uae)
+    TurLang = ["turkish","kurdish","arabic"]
+    Turasylum = 0.0
+    Tur = CountryData("turkey", Turasylum, TurLang, 100.5,8.5,1,1,0.838,0,1)
+    CountryList = np.append(CountryList, Tur)
+    SwiLang = ["german","french","italian"]
+    Swiasylum = 0.0
+    Swi = CountryData("switzerland", Swiasylum, SwiLang, 101.5,2.3,0,1,0.955,0,1)
+    CountryList = np.append(CountryList, Swi)
+    SweLang = ["swedish","finnish","arabic"]
+    Sweasylum = 0.0
+    Swe = CountryData("sweden", Sweasylum, SweLang, 98.6,7.8,0,1,0.945,1,1)
+    CountryList = np.append(CountryList, Swe)
+    SpaLang = ["spanish","catalan","galician"]
+    Spaasylum = 0.0
+    Spa = CountryData("spain", Spaasylum, SpaLang, 96.1,12.29,1,1,0.904,1,1)
+    CountryList = np.append(CountryList, Spa)
+    SokLang = ["korean","english","chinese"]
+    Sokasylum = 0.0
+    Sok = CountryData("south_korea", Sokasylum, SokLang, 99.8,2.8,1,1,0.925,0,0)
+    CountryList = np.append(CountryList, Sok)
+    SoA = ["zulu","xhosa","afrikaans"]
+    Soasylum = 0.0
+    So = CountryData("south_africa", Soasylum, SoA, 94.70,32.9,1,1,0.713,0,0)
+    CountryList = np.append(CountryList, So)
 
 
 
@@ -79,7 +174,7 @@ def MainAlgorithm(preferences, name, originCountry, age,
     #2. Match each item with variables in CountryData
     #3. Generate a total match value for each country in CountryList
     #4. Return the best x countries
-    
+    FillCountryList() #Lol
     #Assign preference rating:
     variablePreferences = CountryVariablePreference()
     for i in range(0, len(preferences[0])):
@@ -103,7 +198,7 @@ def MainAlgorithm(preferences, name, originCountry, age,
     #Create user and set asylum rates
     user = UserData(name, originCountry, age, 
             userLanguages, gender, sexuality, partySize, educationLevel)
-    setAsylumRates(user.originCountry)
+   # setAsylumRate(user.originCountry)
 
     #Do the actual weightings for each country
     for i in range(0, len(CountryList)):
@@ -207,58 +302,68 @@ def SetMatchValues(country, user, preferences):
     # - Prefer value
     # - User provided input weigh-in
     # - Raw value for factor for each country
+    myMatchVal = 0.0
     for i in range(0, len(preferences.VariablePreferences)):
         currKey = preferences.VariablePreferences.keys()[i]
         preferVal = preferences.VariablePreferences.values()[i]
         
-        userInputWeighIn = CalculateWeighInTimesBaseVal(country, user, currKey)
+        myMatchVal += CalculateWeighInTimesBaseVal(country, user, currKey)
 
         #Do some math here to factor preferVal into CalculateWeighInTimesBaseVal
-
+    MatchValues[country.name] = myMatchVal
         
         
 #Input
-def CalculateWeighInTimesBaseVal(country, user, varName):
+def CalculateWeighInTimesBaseVal(country, user, varName, prefVal):
     if varName == "asylumRate":
         #Arbitrary added at end
         #count positive if good asylum rate, count negative if not
         #split down middle once calculated
+        return 0
     elif varName == "hdi":
         #Arbitrary added at end
         #count very minimally see asylum rate
+        return country.hdi * prefVal
     elif varName == "countryLanguages":
         #from dataset, countryLanguages will be a Dict with key value pair showing percentage pop speaking said langauge
-        #userLanguages will just be from the array
-        if country.countryLanguages[0] == user.userLanguages[0]:
-            #main languages match count very positively
-            return 
-        
+        #userLanguages will just be from the array      
         totalPopularLanguageMatch = 0.0
-        for k, v in country.countryLanguages:
+        for k in country.countryLanguages:
             #key value pairs
             if k in user.userLanguages:
                 #weigh by v or the percentage pop
-                totalPopuplarLanguageMatch += 0.0 #CHANGE THIS
+                totalPopularLanguageMatch += 0.5 #CHANGE THIS
 
         if totalPopularLanguageMatch == 0.0:
             #count as net negative as the user speaks no languages from this country
+            return -0.5 * prefVal
+        else:
+            return totalPopularLanguageMatch * prefVal
                 
-
-                
-    elif varName = "genderRatio":
-        #if applicant is male, disregard gender ratio (female dominant countries like Russia are not net positive for male immigrants)
+    elif varName == "genderRatio":
         #if applicant is female, negative if male dominant
         
         #don't weigh this too high due to uncertainty
+        if (user.gender == 1 and country.genderRatio > 100):
+            return -1 * prefVal
     elif varName == "unemploymentRate":
         #High unemployment is bad
         #if applicant is well educated, decrease detriment due to higher unemployment
+        if (country.unemploymentRate >= 4.5):
+            #consider high unemployment
+            if (user.educationLevel >= 2):
+                return -0.5 * prefVal
+            else:
+                return -1 * prefVal
     elif varName == "collectivismValue":
         #set anchor point of collectivism/individualism at origin country
         #Look at difference between GCI of country we are looking at and GCI of origin country
         #count as positive if more in line with desire
         #count as negative if it goes in the opposite direction
-        
+        if (country.collectivismValue == user.cultureDesire):
+            return 1 * prefVal
+        else:
+            return -0.5 * prefVal
 
     elif varName == "personalFreedomValue":
         #Mount anchor of GCI at origin country
@@ -266,13 +371,18 @@ def CalculateWeighInTimesBaseVal(country, user, varName):
         #if the country is less in line with the value count as negative
         #Ex: origin country: russia, current country is France, individual desires more democracy = france's personalFreedomValue is positive
         #ex: origin country Germany, current country is Saudi Arabia, individual desires more democracy = SA's personalFreedomValue is negative
-    
+        if (country.personalFreedomValue == user.democracyPreference):
+            return 1 * prefVal 
+        else:
+            return -0.5 * prefVal
     
     elif varName == "youthPreferred":
         if 18 <= user.age <= 45 :
             if country.youthPreferred == 'yes' :
                 #count positively
+                return 1 * prefVal
         
+        return 0
         #count neutrally otherwise
     
     else:
@@ -281,19 +391,23 @@ def CalculateWeighInTimesBaseVal(country, user, varName):
         if user.partySize > 1: 
             if country.supportsDependents:
                 #count positively
+                return 1 * prefVal
             else:
                 #count negatively
+                return -0.5 * prefVal
         else:
             #doesn't matter if traveling alone so count neutrally
+            return 0
 
 
 #Input:
 # - Origin country of the user by name
 #Output:
 # - None. Sets asylum rate of each country in CountryList
-def setAsylumRates(origin):
-    #lookup refugee database for each country from the user'ss data
-    #popuplate CountryData information
-    for i in range(0, len(CountryList)):
-        CountryList[i].asylumRate = 0 #get from database
+# def setAsylumRates(origin, destination):
+#     #lookup refugee database for each country from the user'ss data
+#     #popuplate CountryData information
+#     for i in range(0, len(CountryList)):
+#         CountryList[i].asylumRate = 0 #get from database
 
+main()
