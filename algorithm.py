@@ -4,6 +4,9 @@ app = Flask(__name__)
 
 def main():
     print("Hello world")
+    bsPref = [["countryLanguages", "genderRatio", "unemploymentRate"], ["collectivismValue", "personalFreedomValue"], ["youthPreferred", "supportsDependents"]]
+    returned = MainAlgorithm(bsPref, "bob", "zimbabwe", 25, ["english", "spanish"], 0, 0, 1, 3)
+    print(returned)
 
 class UserData:
     #name, coo, etc..
@@ -43,7 +46,7 @@ class CountryData:
         self.supportsDependents = sD #float or bool?
     
 
-CountryList = np.empty() # a list of CountryData objects
+CountryList = np.empty(0,) # a list of CountryData objects
 
 MatchValues = {} #Dictionary storing [country_name, match_value]
 
@@ -70,6 +73,7 @@ def FillCountryList():
     AusLang = ["english","mandarin", "arabic"]
     Ausasylum = 0.0
     Aus = CountryData("australia", Ausasylum, AusLang, 98.6, 4, 0, 1, 0.951, 0,0)
+    print(Aus)
     CountryList = np.append(CountryList, Aus)
     BrzLang = ["portuguese", "spanish", "english"]
     Brzasylum = 0.0
@@ -194,7 +198,7 @@ def MainAlgorithm(preferences, name, originCountry, age,
     #Create user and set asylum rates
     user = UserData(name, originCountry, age, 
             userLanguages, gender, sexuality, partySize, educationLevel)
-    setAsylumRates(user.originCountry)
+   # setAsylumRate(user.originCountry)
 
     #Do the actual weightings for each country
     for i in range(0, len(CountryList)):
@@ -376,7 +380,7 @@ def CalculateWeighInTimesBaseVal(country, user, varName, prefVal):
         if 18 <= user.age <= 45 :
             if country.youthPreferred == 'yes' :
                 #count positively
-                return 1 * preferVal
+                return 1 * prefVal
         
         return 0
         #count neutrally otherwise
@@ -406,3 +410,4 @@ def CalculateWeighInTimesBaseVal(country, user, varName, prefVal):
 #     for i in range(0, len(CountryList)):
 #         CountryList[i].asylumRate = 0 #get from database
 
+main()
